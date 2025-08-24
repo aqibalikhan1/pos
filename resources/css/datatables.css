@@ -1,0 +1,92 @@
+/* DataTables TailwindCSS Integration */
+.dataTables_wrapper {
+    @apply bg-white rounded-lg shadow-md;
+}
+
+.dataTables_wrapper .dataTables_length {
+    @apply mb-4;
+}
+
+.dataTables_wrapper .dataTables_length select {
+    @apply border border-gray-300 rounded-md px-2 py-1 text-sm;
+}
+
+.dataTables_wrapper .dataTables_filter {
+    @apply mb-4;
+}
+
+.dataTables_wrapper .dataTables_filter input {
+    @apply border border-gray-300 rounded-md px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500;
+}
+
+.dataTables_wrapper .dataTables_info {
+    @apply text-sm text-gray-600 mb-2;
+}
+
+.dataTables_wrapper .dataTables_paginate {
+    @apply flex justify-center mt-4;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    @apply px-3 py-1 mx-1 border border-gray-300 rounded-md text-sm hover:bg-gray-100;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.current {
+    @apply bg-blue-500 text-white border-blue-500;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.disabled {
+    @apply text-gray-400 cursor-not-allowed;
+}
+
+.dataTables_wrapper table.dataTable {
+    @apply w-full border-collapse;
+}
+
+.dataTables_wrapper table.dataTable thead th {
+    @apply bg-gray-50 px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200;
+}
+
+.dataTables_wrapper table.dataTable tbody td {
+    @apply px-4 py-2 text-sm text-gray-900 border-b border-gray-200;
+}
+
+.dataTables_wrapper table.dataTable tbody tr:hover {
+    @apply bg-gray-50;
+}
+
+.dataTables_wrapper .dt-buttons {
+    @apply mb-4;
+}
+
+.dataTables_wrapper .dt-buttons .btn {
+    @apply px-4 py-2 mr-2 text-sm font-medium rounded-md transition-colors;
+}
+
+.dataTables_wrapper .dt-buttons .btn-primary {
+    @apply bg-blue-500 text-white hover:bg-blue-600;
+}
+
+.dataTables_wrapper .dt-buttons .btn-secondary {
+    @apply bg-gray-500 text-white hover:bg-gray-600;
+}
+
+.dataTables_wrapper .dt-buttons .btn-success {
+    @apply bg-green-500 text-white hover:bg-green-600;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .dataTables_wrapper .dataTables_length,
+    .dataTables_wrapper .dataTables_filter {
+        @apply text-center;
+    }
+    
+    .dataTables_wrapper .dt-buttons {
+        @apply flex flex-col items-center;
+    }
+    
+    .dataTables_wrapper .dt-buttons .btn {
+        @apply mb-2 mr-0;
+    }
+}

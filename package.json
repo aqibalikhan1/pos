@@ -3,19 +3,32 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "build": "vite build",
+        "build": "vite build && vite build --ssr",
         "dev": "vite"
     },
     "devDependencies": {
-        "@tailwindcss/forms": "^0.5.7",
+        "@inertiajs/vue3": "^2.0.0",
+        "@tailwindcss/forms": "^0.5.3",
         "@tailwindcss/typography": "^0.5.10",
         "@tailwindcss/vite": "^4.0.0",
-        "autoprefixer": "^10.4.16",
+        "@vitejs/plugin-vue": "^5.0.5",
+        "@vue/server-renderer": "^3.4.0",
+        "autoprefixer": "^10.4.12",
         "axios": "^1.11.0",
         "concurrently": "^9.0.1",
         "laravel-vite-plugin": "^2.0.0",
-        "postcss": "^8.4.32",
+        "postcss": "^8.4.31",
         "tailwindcss": "^3.4.0",
-        "vite": "^7.0.4"
+        "vite": "^6.0.0",
+        "vue": "^3.4.0"
+    },
+    "dependencies": {
+        "material-components-web": "^14.0.0",
+        "datatables.net": "^2.1.8",
+        "datatables.net-dt": "^2.1.8",
+        "datatables.net-buttons": "^2.4.2",
+        "datatables.net-buttons-dt": "^2.4.2",
+        "jquery": "^3.7.1",
+        "material-design-icons": "^3.0.1"
     }
 }
