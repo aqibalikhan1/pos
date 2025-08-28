@@ -13,6 +13,7 @@ class TaxRate extends Model
         'tax_type_id',
         'name',
         'rate',
+        'filer_rate',
         'fixed_amount',
         'effective_date',
         'end_date',
@@ -21,6 +22,7 @@ class TaxRate extends Model
 
     protected $casts = [
         'rate' => 'decimal:2',
+        'filer_rate' => 'decimal:2',
         'fixed_amount' => 'decimal:2',
         'effective_date' => 'date',
         'end_date' => 'date',

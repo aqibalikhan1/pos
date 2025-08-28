@@ -29,7 +29,7 @@ class CreditNoteReceivedController extends Controller
      */
     public function create()
     {
-        $suppliers = Supplier::active()->get();
+        $suppliers = Supplier::all(); // Temporarily fetch all suppliers
         $accounts = Account::supplier()->active()->get();
 
         return view('pos.accounts.credit-notes.create', compact('suppliers', 'accounts'));
@@ -47,10 +47,7 @@ class CreditNoteReceivedController extends Controller
             'credit_note_date' => 'required|date',
             'original_purchase_date' => 'nullable|date',
             'original_invoice_number' => 'nullable|string|max:50',
-            'subtotal' => 'required|numeric|min:0',
-            'tax_amount' => 'nullable|numeric|min:0',
-            'discount_amount' => 'nullable|numeric|min:0',
-            'total_amount' => 'required|numeric|min:0',
+            'amount' => 'required|numeric|min:0',
             'reason' => 'nullable|string|max:1000',
             'status' => 'required|in:pending,approved,rejected',
         ]);
@@ -65,7 +62,7 @@ class CreditNoteReceivedController extends Controller
                 AccountTransaction::create([
                     'account_id' => $creditNote->account_id,
                     'transaction_type' => 'credit',
-                    'amount' => $creditNote->total_amount,
+                    'amount' => $creditNote->amount,
                     'description' => "Credit Note: {$creditNote->credit_note_number}",
                     'transaction_date' => $creditNote->credit_note_date,
                     'reference_number' => $creditNote->credit_note_number,
@@ -74,7 +71,7 @@ class CreditNoteReceivedController extends Controller
 
                 // Update account balance
                 $account = $creditNote->account;
-                $account->current_balance -= $creditNote->total_amount;
+                $account->current_balance -= $creditNote->amount;
                 $account->save();
             }
         });
@@ -114,17 +111,14 @@ class CreditNoteReceivedController extends Controller
             'credit_note_date' => 'required|date',
             'original_purchase_date' => 'nullable|date',
             'original_invoice_number' => 'nullable|string|max:50',
-            'subtotal' => 'required|numeric|min:0',
-            'tax_amount' => 'nullable|numeric|min:0',
-            'discount_amount' => 'nullable|numeric|min:0',
-            'total_amount' => 'required|numeric|min:0',
+            'amount' => 'required|numeric|min:0',
             'reason' => 'nullable|string|max:1000',
             'status' => 'required|in:pending,approved,rejected',
         ]);
 
         DB::transaction(function () use ($validated, $creditNote) {
             $oldStatus = $creditNote->status;
-            $oldAmount = $creditNote->total_amount;
+            $oldAmount = $creditNote->amount;
 
             $creditNote->update($validated);
 
@@ -146,14 +140,14 @@ class CreditNoteReceivedController extends Controller
                     AccountTransaction::create([
                         'account_id' => $creditNote->account_id,
                         'transaction_type' => 'credit',
-                        'amount' => $creditNote->total_amount,
+                        'amount' => $creditNote->amount,
                         'description' => "Credit Note: {$creditNote->credit_note_number}",
                         'transaction_date' => $creditNote->credit_note_date,
                         'reference_number' => $creditNote->credit_note_number,
                         'created_by' => $creditNote->created_by,
                     ]);
 
-                    $account->current_balance -= $creditNote->total_amount;
+                    $account->current_balance -= $creditNote->amount;
                 }
 
                 $account->save();
@@ -179,7 +173,7 @@ class CreditNoteReceivedController extends Controller
             // Update account balance if approved
             if ($creditNote->status === 'approved') {
                 $account = $creditNote->account;
-                $account->current_balance += $creditNote->total_amount;
+                $account->current_balance += $creditNote->amount;
                 $account->save();
             }
 

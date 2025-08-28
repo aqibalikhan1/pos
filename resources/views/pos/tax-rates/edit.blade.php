@@ -137,7 +137,7 @@
                         <div class="space-y-2">
                             <label for="rate" class="block text-sm font-semibold text-gray-700">
                                 <i class="material-icons text-sm align-middle mr-1 text-blue-600">trending_up</i>
-                                Rate (%) *
+                                Standard Rate (%) *
                             </label>
                             <div class="relative">
                                 <input type="number" 
@@ -155,6 +155,34 @@
                                 </div>
                             </div>
                             @error('rate')
+                                <p class="text-red-500 text-xs mt-1 flex items-center">
+                                    <i class="material-icons text-xs mr-1">error</i>
+                                    {{ $message }}
+                                </p>
+                            @enderror
+                        </div>
+
+                        <!-- Filer Rate -->
+                        <div class="space-y-2">
+                            <label for="filer_rate" class="block text-sm font-semibold text-gray-700">
+                                <i class="material-icons text-sm align-middle mr-1 text-blue-600">trending_down</i>
+                                Filer Rate (%) 
+                            </label>
+                            <div class="relative">
+                                <input type="number" 
+                                       name="filer_rate" 
+                                       id="filer_rate" 
+                                       value="{{ old('filer_rate', $taxRate->filer_rate) }}"
+                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 @error('filer_rate') border-red-500 ring-red-200 @enderror"
+                                       placeholder="10.00"
+                                       step="0.01"
+                                       min="0"
+                                       max="100">
+                                <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                                    <span class="text-gray-400 text-sm">%</span>
+                                </div>
+                            </div>
+                            @error('filer_rate')
                                 <p class="text-red-500 text-xs mt-1 flex items-center">
                                     <i class="material-icons text-xs mr-1">error</i>
                                     {{ $message }}

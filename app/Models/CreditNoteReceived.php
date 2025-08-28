@@ -18,10 +18,7 @@ class CreditNoteReceived extends Model
         'credit_note_date',
         'original_purchase_date',
         'original_invoice_number',
-        'subtotal',
-        'tax_amount',
-        'discount_amount',
-        'total_amount',
+        'amount',
         'reason',
         'status',
         'created_by'
@@ -30,10 +27,7 @@ class CreditNoteReceived extends Model
     protected $casts = [
         'credit_note_date' => 'date',
         'original_purchase_date' => 'date',
-        'subtotal' => 'decimal:2',
-        'tax_amount' => 'decimal:2',
-        'discount_amount' => 'decimal:2',
-        'total_amount' => 'decimal:2',
+        'amount' => 'decimal:2',
         'status' => 'string',
     ];
 

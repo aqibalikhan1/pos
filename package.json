@@ -4,7 +4,8 @@
     "type": "module",
     "scripts": {
         "build": "vite build && vite build --ssr",
-        "dev": "vite"
+        "dev": "vite",
+        "production": "npm run build"
     },
     "devDependencies": {
         "@inertiajs/vue3": "^2.0.0",
@@ -14,7 +15,6 @@
         "@vitejs/plugin-vue": "^5.0.5",
         "@vue/server-renderer": "^3.4.0",
         "autoprefixer": "^10.4.12",
-        "axios": "^1.11.0",
         "concurrently": "^9.0.1",
         "laravel-vite-plugin": "^2.0.0",
         "postcss": "^8.4.31",
@@ -23,12 +23,12 @@
         "vue": "^3.4.0"
     },
     "dependencies": {
-        "material-components-web": "^14.0.0",
         "datatables.net": "^2.1.8",
-        "datatables.net-dt": "^2.1.8",
         "datatables.net-buttons": "^2.4.2",
         "datatables.net-buttons-dt": "^2.4.2",
+        "datatables.net-dt": "^2.1.8",
         "jquery": "^3.7.1",
+        "material-components-web": "^14.0.0",
         "material-design-icons": "^3.0.1"
     }
 }

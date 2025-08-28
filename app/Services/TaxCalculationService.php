@@ -29,7 +29,7 @@ class TaxCalculationService
         $applicableTaxRates = $this->getApplicableTaxRates($product, $transactionType, $customer);
 
         foreach ($applicableTaxRates as $taxRate) {
-            $rateTaxAmount = $this->calculateTaxAmount($taxableAmount, $taxRate);
+            $rateTaxAmount = $this->calculateTaxAmount($taxableAmount, $taxRate, $customer);
             $taxAmount += $rateTaxAmount;
             
             $taxDetails[] = [
@@ -89,16 +89,22 @@ class TaxCalculationService
     }
 
     /**
-     * Calculate tax amount based on tax rate type
+     * Calculate tax amount based on tax rate type and customer filer status
      *
      * @param float $taxableAmount
      * @param TaxRate $taxRate
+     * @param Customer|null $customer
      * @return float
      */
-    protected function calculateTaxAmount(float $taxableAmount, TaxRate $taxRate): float
+    protected function calculateTaxAmount(float $taxableAmount, TaxRate $taxRate, ?Customer $customer = null): float
     {
         if ($taxRate->taxType->type === 'percentage') {
-            return $taxableAmount * ($taxRate->rate / 100);
+            // Use filer rate if customer is a filer and filer rate is set
+            $rate = $taxRate->rate;
+            if ($customer && $customer->is_filer && $taxRate->filer_rate !== null) {
+                $rate = $taxRate->filer_rate;
+            }
+            return $taxableAmount * ($rate / 100);
         } else {
             return $taxRate->fixed_amount;
         }

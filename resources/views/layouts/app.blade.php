@@ -14,7 +14,7 @@
     <!-- DataTables -->
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.7/css/dataTables.material.min.css">
     
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @vite(['resources/js/app.js'])
 </head>
 <body class="mdc-typography">
     <div class="app-container">
@@ -73,7 +73,6 @@
 
     <!-- Scripts -->
     <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.7/js/dataTables.material.min.js"></script>
     
@@ -97,5 +96,6 @@
     </script>
     
     @stack('scripts')
+    
 </body>
 </html>

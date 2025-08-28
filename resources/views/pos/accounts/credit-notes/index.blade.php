@@ -29,7 +29,7 @@
                 <i class="material-icons">attach_money</i>
             </div>
             <div class="stats-card-title">Total Amount</div>
-            <div class="stats-card-value">${{ number_format($creditNotes->sum('total_amount'), 2) }}</div>
+            <div class="stats-card-value">{{ \App\Helpers\CurrencyHelper::formatAmount($creditNotes->sum('amount')) }}</div>
         </div>
         
         <div class="stats-card">
@@ -133,7 +133,7 @@
                                 @endif
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                ${{ number_format($creditNote->total_amount, 2) }}
+                                {{ \App\Helpers\CurrencyHelper::formatAmount($creditNote->amount) }}
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 @if($creditNote->status == 'approved')

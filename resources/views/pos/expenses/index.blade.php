@@ -9,7 +9,7 @@
     <!-- Stats Cards -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
         <div class="stats-card">
-            <div class="stats-card-icon bg-red-100 text-red-600">
+            <div class="stats-card-icon bg-purple-100 text-purple-600">
                 <i class="material-icons">account_balance_wallet</i>
             </div>
             <div class="stats-card-title">Total Expenses</div>
@@ -17,7 +17,7 @@
         </div>
         
         <div class="stats-card">
-            <div class="stats-card-icon bg-orange-100 text-orange-600">
+            <div class="stats-card-icon bg-blue-100 text-blue-600">
                 <i class="material-icons">category</i>
             </div>
             <div class="stats-card-title">Categories</div>
@@ -25,7 +25,7 @@
         </div>
         
         <div class="stats-card">
-            <div class="stats-card-icon bg-purple-100 text-purple-600">
+            <div class="stats-card-icon bg-green-100 text-green-600">
                 <i class="material-icons">receipt</i>
             </div>
             <div class="stats-card-title">Total Records</div>
@@ -61,12 +61,12 @@
 
             <div class="overflow-x-auto">
                 <table class="min-w-full divide-y divide-gray-200 data-table" id="expensesTable" data-auto-init="true">
-                    <thead class="bg-gradient-to-r from-red-50 to-orange-50">
+                    <thead class="bg-gradient-to-r from-purple-50 to-pink-50">
                         <tr>
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
                                 <div class="flex items-center">
-                                    <i class="material-icons text-sm mr-1">tag</i>
-                                    ID
+                                    <i class="material-icons text-sm mr-1">receipt</i>
+                                    Expense
                                 </div>
                             </th>
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
@@ -111,7 +111,15 @@
                         @forelse($expenses as $expense)
                         <tr class="hover:bg-gray-50 transition-colors duration-200">
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm font-medium text-gray-900">#{{ $expense->id }}</div>
+                                <div class="flex items-center">
+                                    <div class="w-10 h-10 bg-gradient-to-br from-purple-100 to-pink-100 rounded-lg flex items-center justify-center mr-3">
+                                        <i class="material-icons text-purple-600 text-sm">{{ substr($expense->description, 0, 1) }}</i>
+                                    </div>
+                                    <div>
+                                        <div class="text-sm font-medium text-gray-900">#{{ $expense->id }}</div>
+                                        <div class="text-sm text-gray-500">{{ $expense->category->name }}</div>
+                                    </div>
+                                </div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
@@ -191,7 +199,8 @@
     $(document).ready(function() {
         $('#expensesTable').DataTable({
             responsive: true,
-            
+            pageLength: 10,
+            lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
             language: {
                 search: "Search expenses:",
                 lengthMenu: "Show _MENU_ expenses per page",
@@ -200,14 +209,18 @@
                 infoFiltered: "(filtered from _MAX_ total expenses)",
                 emptyTable: "No expenses available",
                 zeroRecords: "No expenses match your search",
-                
+                paginate: {
+                    first: '<i class="material-icons">first_page</i>',
+                    last: '<i class="material-icons">last_page</i>',
+                    next: '<i class="material-icons">chevron_right</i>',
+                    previous: '<i class="material-icons">chevron_left</i>'
+                }
             },
             columnDefs: [
                 { orderable: false, targets: [6] }, // Actions column
                 { searchable: false, targets: [6] }
             ],
-            paging: false,
-            info: false,
+            dom: '<"flex justify-between items-center mb-4"<"flex items-center"l><"flex items-center"f>>rt<"flex justify-between items-center mt-4"<"flex items-center"i><"flex items-center"p>>B',
             buttons: [
                 {
                     extend: 'copy',

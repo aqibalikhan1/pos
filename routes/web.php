@@ -17,6 +17,8 @@ use App\Http\Controllers\SupplierPaymentController;
 use App\Http\Controllers\SaleInvoiceController;
 use App\Http\Controllers\CreditNoteReceivedController;
 
+use App\Http\Controllers\PosTerminalController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -36,7 +38,7 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    Route::get('/dashboard', function () {
+    Route::get('/', function () {
         return view('main-dashboard');
     })->name('dashboard');
 
@@ -45,6 +47,14 @@ Route::middleware([
         Route::get('/', function () {
             return view('pos.dashboard');
         })->name('pos.dashboard');
+        
+        // POS Terminal
+        Route::get('terminal', [PosTerminalController::class, 'index'])->name('pos.terminal');
+        Route::post('terminal/search-products', [PosTerminalController::class, 'searchProducts'])->name('pos.terminal.search-products');
+        Route::post('terminal/process-sale', [PosTerminalController::class, 'processSale'])->name('pos.terminal.process-sale');
+        Route::post('terminal/quick-create-customer', [PosTerminalController::class, 'quickCreateCustomer'])->name('pos.terminal.quick-create-customer');
+        Route::get('terminal/products-by-category/{categoryId}', [PosTerminalController::class, 'getProductsByCategory'])->name('pos.terminal.products-by-category');
+        Route::get('terminal/currency-symbol', [PosTerminalController::class, 'getCurrencySymbol'])->name('pos.terminal.currency-symbol');
         
         // Product Management
         Route::resource('products', ProductController::class);

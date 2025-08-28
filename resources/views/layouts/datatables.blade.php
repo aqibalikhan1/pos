@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DataTables Implementation</title>
-    @vite(['resources/css/app.css', 'resources/css/datatables.css', 'resources/js/app.js', 'resources/js/datatables.js'])
+    @vite(['resources/js/app.js', 'resources/js/datatables.js'])
 </head>
 <body>
     <div class="container mx-auto px-4 py-8">

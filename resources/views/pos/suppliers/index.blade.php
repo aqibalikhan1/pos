@@ -33,14 +33,14 @@
         </div>
     </div>
 
-    <!-- Suppliers Table Card -->
+    <!-- Suppliers Card -->
     <div class="md-card">
         <div class="md-card-header">
             <div class="flex justify-between items-center">
                 <h2 class="md-card-title">All Suppliers</h2>
                 <a href="{{ route('suppliers.create') }}" class="md-button md-button-primary">
                     <i class="material-icons mr-2">add</i>
-                    Add New Supplier
+                    Add Supplier
                 </a>
             </div>
         </div>
@@ -53,7 +53,7 @@
             @endif
 
             <div class="overflow-x-auto">
-                <table class="min-w-full divide-y divide-gray-200 data-table" id="suppliersTable">
+                <table class="min-w-full divide-y divide-gray-200 data-table" id="suppliersTable" data-auto-init="true">
                     <thead class="bg-gradient-to-r from-blue-50 to-indigo-50">
                         <tr>
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
@@ -94,12 +94,6 @@
                             </th>
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
                                 <div class="flex items-center">
-                                    <i class="material-icons text-sm mr-1">calendar_today</i>
-                                    Created
-                                </div>
-                            </th>
-                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                                <div class="flex items-center">
                                     <i class="material-icons text-sm mr-1">settings</i>
                                     Actions
                                 </div>
@@ -108,87 +102,87 @@
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
                         @forelse($suppliers as $supplier)
-                            <tr class="hover:bg-gray-50 transition-colors duration-200">
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="flex items-center">
-                                        <div class="w-10 h-10 bg-gradient-to-br from-blue-100 to-blue-200 rounded-lg flex items-center justify-center shadow-sm">
-                                            <i class="material-icons text-blue-600 text-lg">business</i>
-                                        </div>
-                                        <div class="ml-4">
-                                            <div class="text-sm font-medium text-gray-900">{{ $supplier->company_name }}</div>
-                                            <div class="text-sm text-gray-500">{{ $supplier->contact_name }}</div>
-                                        </div>
+                        <tr class="hover:bg-gray-50 transition-colors duration-200">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="w-10 h-10 bg-gradient-to-br from-blue-100 to-blue-200 rounded-lg flex items-center justify-center mr-3">
+                                        <i class="material-icons text-blue-600 text-sm">business</i>
                                     </div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
-                                        {{ $supplier->contact_name }}
-                                    </span>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                                        {{ $supplier->email }}
-                                    </span>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    {{ $supplier->phone ?? 'N/A' }}
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800">
-                                        {{ ucfirst($supplier->supplier_type ?? 'N/A') }}
-                                    </span>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    @if($supplier->is_active)
-                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                            <i class="material-icons text-xs mr-1">check_circle</i>
-                                            Active
-                                        </span>
-                                    @else
-                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                                            <i class="material-icons text-xs mr-1">cancel</i>
-                                            Inactive
-                                        </span>
-                                    @endif
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    {{ $supplier->created_at->format('M d, Y') }}
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                    <div class="flex items-center space-x-2">
-                                        <a href="{{ route('suppliers.show', $supplier) }}" 
-                                           class="text-green-600 hover:text-green-900">
-                                            <i class="material-icons">visibility</i>
-                                        </a>
-                                        <a href="{{ route('suppliers.edit', $supplier) }}" 
-                                           class="text-blue-600 hover:text-blue-900">
-                                            <i class="material-icons">edit</i>
-                                        </a>
-                                        <form action="{{ route('suppliers.destroy', $supplier) }}" method="POST" class="inline">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" 
-                                                    class="text-red-600 hover:text-red-900"
-                                                    onclick="return confirm('Are you sure you want to delete this supplier?')">
-                                                <i class="material-icons">delete</i>
-                                            </button>
-                                        </form>
+                                    <div>
+                                        <div class="text-sm font-medium text-gray-900">{{ $supplier->company_name }}</div>
+                                        <div class="text-sm text-gray-500">{{ $supplier->contact_name }}</div>
                                     </div>
-                                </td>
-                            </tr>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
+                                    {{ $supplier->contact_name }}
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                    {{ $supplier->email }}
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                {{ $supplier->phone ?? 'N/A' }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800">
+                                    {{ ucfirst($supplier->supplier_type ?? 'N/A') }}
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                @if($supplier->is_active)
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                        <i class="material-icons text-xs mr-1">check_circle</i>
+                                        Active
+                                    </span>
+                                @else
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                                        <i class="material-icons text-xs mr-1">cancel</i>
+                                        Inactive
+                                    </span>
+                                @endif
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                <div class="flex items-center space-x-2">
+                                    <a href="{{ route('suppliers.show', $supplier) }}" 
+                                       class="p-2 text-green-600 hover:text-green-800 hover:bg-green-50 rounded-lg transition-colors duration-200" 
+                                       title="View Supplier">
+                                        <i class="material-icons text-base">visibility</i>
+                                    </a>
+                                    <a href="{{ route('suppliers.edit', $supplier) }}" 
+                                       class="p-2 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-lg transition-colors duration-200" 
+                                       title="Edit Supplier">
+                                        <i class="material-icons text-base">edit</i>
+                                    </a>
+                                    <form action="{{ route('suppliers.destroy', $supplier) }}" method="POST" class="inline">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" 
+                                                class="p-2 text-red-600 hover:text-red-800 hover:bg-red-50 rounded-lg transition-colors duration-200" 
+                                                onclick="return confirm('Are you sure you want to delete this supplier?')" 
+                                                title="Delete Supplier">
+                                            <i class="material-icons text-base">delete</i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
                         @empty
-                            <tr>
-                                <td colspan="8" class="px-6 py-12 text-center">
-                                    <div class="flex flex-col items-center">
-                                        <i class="material-icons text-6xl text-gray-300 mb-4">business</i>
-                                        <p class="text-gray-500 text-lg mb-4">No suppliers found</p>
-                                        <a href="{{ route('suppliers.create') }}" class="md-button md-button-primary">
-                                            <i class="material-icons mr-2">add</i>
-                                            Add Your First Supplier
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
+                        <tr>
+                            <td colspan="7" class="px-6 py-12 text-center">
+                                <div class="flex flex-col items-center">
+                                    <i class="material-icons text-6xl text-gray-300 mb-4">business</i>
+                                    <p class="text-gray-500 text-lg mb-4">No suppliers found</p>
+                                    <a href="{{ route('suppliers.create') }}" class="md-button md-button-primary">
+                                        <i class="material-icons mr-2">add</i>
+                                        Add Your First Supplier
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
                         @endforelse
                     </tbody>
                 </table>
@@ -221,36 +215,9 @@
                 }
             },
             columnDefs: [
-                { orderable: false, targets: [7] }, // Actions column
-                { searchable: false, targets: [7] }
+                { orderable: false, targets: [6] }, // Actions column
+                { searchable: false, targets: [6] }
             ],
-            // Handle empty table gracefully
-            initComplete: function() {
-                // Style the search input
-                $('.dataTables_filter input').addClass('md-input').attr('placeholder', 'Search suppliers...');
-                
-                // Style the length menu
-                $('.dataTables_length select').addClass('md-input');
-                
-                // Add loading state
-                $('#suppliersTable').addClass('loaded');
-            },
-            // Prevent error on empty table
-            language: {
-                search: "Search suppliers:",
-                lengthMenu: "Show _MENU_ suppliers per page",
-                info: "Showing _START_ to _END_ of _TOTAL_ suppliers",
-                infoEmpty: "No suppliers found",
-                infoFiltered: "(filtered from _MAX_ total suppliers)",
-                emptyTable: "No suppliers available",
-                zeroRecords: "No suppliers match your search",
-                paginate: {
-                    first: '<i class="material-icons">first_page</i>',
-                    last: '<i class="material-icons">last_page</i>',
-                    next: '<i class="material-icons">chevron_right</i>',
-                    previous: '<i class="material-icons">chevron_left</i>'
-                }
-            },
             dom: '<"flex justify-between items-center mb-4"<"flex items-center"l><"flex items-center"f>>rt<"flex justify-between items-center mt-4"<"flex items-center"i><"flex items-center"p>>B',
             buttons: [
                 {

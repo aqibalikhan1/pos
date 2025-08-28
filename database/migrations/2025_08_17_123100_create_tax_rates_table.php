@@ -13,6 +13,7 @@ return new class extends Migration
             $table->foreignId('tax_type_id')->constrained('tax_types')->onDelete('cascade');
             $table->string('name');
             $table->decimal('rate', 5, 2); // e.g., 15.00 for 15%
+            $table->decimal('filer_rate', 5, 2)->nullable(); // e.g., 10.00 for 10% for filers
             $table->decimal('fixed_amount', 10, 2)->nullable(); // for fixed amount taxes
             $table->date('effective_date');
             $table->date('end_date')->nullable();

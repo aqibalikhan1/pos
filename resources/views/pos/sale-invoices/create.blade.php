@@ -23,7 +23,11 @@
                             class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                         <option value="">Select Customer</option>
                         @foreach($customers as $customer)
-                            <option value="{{ $customer->id }}">{{ $customer->name }}</option>
+                <option value="{{ $customer->id }}" 
+                        data-is-filer="{{ $customer->is_filer ? '1' : '0' }}"
+                        data-tax-rate="{{ $customer->is_filer ? ($customer->filer_tax_rate ?? 18) : 18 }}">
+                    {{ $customer->name }} ({{ $customer->is_filer ? 'Filer' : 'Non-Filer' }})
+                </option>
                         @endforeach
                     </select>
                     @error('customer_id')
@@ -339,6 +343,27 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     }
+
+    // Customer change handler for tax calculation
+    document.getElementById('customer_id').addEventListener('change', function() {
+        const selectedOption = this.options[this.selectedIndex];
+        const isFiler = selectedOption.dataset.isFiler === '1';
+        const taxRate = parseFloat(selectedOption.dataset.taxRate) || 18;
+        
+        // Update tax for all items based on customer type
+        document.querySelectorAll('.item-row').forEach(row => {
+            const price = parseFloat(row.querySelector('.price-input').value) || 0;
+            const quantity = parseFloat(row.querySelector('.quantity-input').value) || 0;
+            const discount = parseFloat(row.querySelector('.discount-input').value) || 0;
+            
+            const taxableAmount = (price * quantity) - discount;
+            const taxAmount = taxableAmount * (taxRate / 100);
+            
+            row.querySelector('.tax-input').value = taxAmount.toFixed(2);
+        });
+        
+        calculateTotals();
+    });
 
     // Event listeners
     addItemBtn.addEventListener('click', addItem);

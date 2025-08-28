@@ -19,10 +19,6 @@ return new class extends Migration
             $table->date('credit_note_date');
             $table->date('original_purchase_date')->nullable();
             $table->string('original_invoice_number')->nullable();
-            $table->decimal('subtotal', 10, 2);
-            $table->decimal('tax_amount', 10, 2)->default(0);
-            $table->decimal('discount_amount', 10, 2)->default(0);
-            $table->decimal('total_amount', 10, 2);
             $table->text('reason')->nullable();
             $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
             $table->foreignId('created_by')->constrained('users')->onDelete('cascade');

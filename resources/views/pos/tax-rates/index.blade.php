@@ -65,7 +65,13 @@
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
                                 <div class="flex items-center">
                                     <i class="material-icons text-sm mr-1">percent</i>
-                                    Rate
+                                    Standard Rate
+                                </div>
+                            </th>
+                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                                <div class="flex items-center">
+                                    <i class="material-icons text-sm mr-1">trending_down</i>
+                                    Filer Rate
                                 </div>
                             </th>
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
@@ -112,6 +118,17 @@
                                     {{ $taxRate->rate }}%
                                 </span>
                             </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                @if($taxRate->filer_rate !== null)
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                        {{ $taxRate->filer_rate }}%
+                                    </span>
+                                @else
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                                        N/A
+                                    </span>
+                                @endif
+                            </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                 {{ $taxRate->effective_date->format('M d, Y') }}
                             </td>
@@ -150,7 +167,7 @@
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="6" class="px-6 py-12 text-center">
+                            <td colspan="7" class="px-6 py-12 text-center">
                                 <div class="flex flex-col items-center">
                                     <i class="material-icons text-6xl text-gray-300 mb-4">percent</i>
                                     <p class="text-gray-500 text-lg mb-4">No tax rates found</p>
@@ -198,8 +215,8 @@
                 }
             },
             columnDefs: [
-                { orderable: false, targets: [5] }, // Actions column
-                { searchable: false, targets: [5] }
+                { orderable: false, targets: [6] }, // Actions column
+                { searchable: false, targets: [6] }
             ],
             dom: '<"flex justify-between items-center mb-4"<"flex items-center"l><"flex items-center"f>>rt<"flex justify-between items-center mt-4"<"flex items-center"i><"flex items-center"p>>B',
             buttons: [
