@@ -184,68 +184,82 @@
 @push('scripts')
 <script>
     $(document).ready(function() {
-        $('#purchasesTable').DataTable({
-            responsive: true,
-            pageLength: 10,
-            lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
-            language: {
-                search: "Search purchases:",
-                lengthMenu: "Show _MENU_ purchases per page",
-                info: "Showing _START_ to _END_ of _TOTAL_ purchases",
-                infoEmpty: "No purchases found",
-                infoFiltered: "(filtered from _MAX_ total purchases)",
-                emptyTable: "No purchases available",
-                zeroRecords: "No purchases match your search",
-                paginate: {
-                    first: '<i class="material-icons">first_page</i>',
-                    last: '<i class="material-icons">last_page</i>',
-                    next: '<i class="material-icons">chevron_right</i>',
-                    previous: '<i class="material-icons">chevron_left</i>'
+        // Only initialize DataTable if there are actual data rows (not just the empty message)
+        const table = $('#purchasesTable');
+        const hasData = table.find('tbody tr').length > 1 || (table.find('tbody tr').length === 1 && !table.find('tbody tr').has('td[colspan]').length);
+        
+        if (hasData) {
+            table.DataTable({
+                responsive: true,
+                pageLength: 10,
+                lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
+                language: {
+                    search: "Search purchases:",
+                    lengthMenu: "Show _MENU_ purchases per page",
+                    info: "Showing _START_ to _END_ of _TOTAL_ purchases",
+                    infoEmpty: "No purchases found",
+                    infoFiltered: "(filtered from _MAX_ total purchases)",
+                    emptyTable: "No purchases available",
+                    zeroRecords: "No purchases match your search",
+                    paginate: {
+                        first: '<i class="material-icons">first_page</i>',
+                        last: '<i class="material-icons">last_page</i>',
+                        next: '<i class="material-icons">chevron_right</i>',
+                        previous: '<i class="material-icons">chevron_left</i>'
+                    }
+                },
+                columnDefs: [
+                    { orderable: false, targets: [6] }, // Actions column
+                    { searchable: false, targets: [6] }
+                ],
+                dom: '<"flex justify-between items-center mb-4"<"flex items-center"l><"flex items-center"f>>rt<"flex justify-between items-center mt-4"<"flex items-center"i><"flex items-center"p>>B',
+                buttons: [
+                    {
+                        extend: 'copy',
+                        text: '<i class="material-icons">content_copy</i>',
+                        className: 'md-button md-button-secondary',
+                        titleAttr: 'Copy to clipboard'
+                    },
+                    {
+                        extend: 'csv',
+                        text: '<i class="material-icons">download</i> CSV',
+                        className: 'md-button md-button-secondary',
+                        titleAttr: 'Download CSV'
+                    },
+                    {
+                        extend: 'excel',
+                        text: '<i class="material-icons">table_view</i> Excel',
+                        className: 'md-button md-button-secondary',
+                        titleAttr: 'Download Excel'
+                    },
+                    {
+                        extend: 'pdf',
+                        text: '<i class="material-icons">picture_as_pdf</i> PDF',
+                        className: 'md-button md-button-secondary',
+                        titleAttr: 'Download PDF'
+                    },
+                    {
+                        extend: 'print',
+                        text: '<i class="material-icons">print</i> Print',
+                        className: 'md-button md-button-secondary',
+                        titleAttr: 'Print'
+                    }
+                ],
+                initComplete: function() {
+                    // Style the search input
+                    $('.dataTables_filter input').addClass('md-input').attr('placeholder', 'Search purchases...');
+                    
+                    // Style the length menu
+                    $('.dataTables_length select').addClass('md-input');
+                    
+                    // Add loading state
+                    $('#purchasesTable').addClass('loaded');
                 }
-            },
-            columnDefs: [
-                { orderable: false, targets: [6] }, // Actions column
-                { searchable: false, targets: [6] }
-            ],
-            dom: '<"flex justify-between items-center mb-4"<"flex items-center"l><"flex items-center"f>>rt<"flex justify-between items-center mt-4"<"flex items-center"i><"flex items-center"p>>B',
-            buttons: [
-                {
-                    extend: 'copy',
-                    text: '<i class="material-icons">content_copy</i>',
-                    className: 'md-button md-button-secondary',
-                    titleAttr: 'Copy to clipboard'
-                },
-                {
-                    extend: 'csv',
-                    text: '<i class="material-icons">download</i> CSV',
-                    className: 'md-button md-button-secondary',
-                    titleAttr: 'Download CSV'
-                },
-                {
-                    extend: 'excel',
-                    text: '<i class="material-icons">table_view</i> Excel',
-                    className: 'md-button md-button-secondary',
-                    titleAttr: 'Download Excel'
-                },
-                {
-                    extend: 'pdf',
-                    text: '<i class="material-icons">picture_as_pdf</i> PDF',
-                    className: 'md-button md-button-secondary',
-                    titleAttr: 'Download PDF'
-                },
-                {
-                    extend: 'print',
-                    text: '<i class="material-icons">print</i> Print',
-                    className: 'md-button md-button-secondary',
-                    titleAttr: 'Print'
-                }
-            ],
-            initComplete: function() {
-                $('.dataTables_filter input').addClass('md-input').attr('placeholder', 'Search purchases...');
-                $('.dataTables_length select').addClass('md-input');
-                $('#purchasesTable').addClass('loaded');
-            }
-        });
+            });
+        } else {
+            // If no data, just add the loaded class
+            $('#purchasesTable').addClass('loaded');
+        }
     });
 </script>
 @endpush

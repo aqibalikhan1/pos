@@ -29,6 +29,7 @@
         "datatables.net-dt": "^2.1.8",
         "jquery": "^3.7.1",
         "material-components-web": "^14.0.0",
-        "material-design-icons": "^3.0.1"
+        "material-design-icons": "^3.0.1",
+        "select2": "4.0.13"
     }
 }

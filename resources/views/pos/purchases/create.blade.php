@@ -71,16 +71,14 @@
                     </div>
                 </div>
 
-                <!-- Products Section -->
-                <div>
-                    <div class="flex justify-between items-center mb-4">
-                        <h3 class="text-lg font-semibold text-gray-900">Products</h3>
-                        <button type="button" id="addProductBtn" 
-                                class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700">
-                            <i class="material-icons mr-2">add</i>
-                            Add Product
-                        </button>
-                    </div>
+    <!-- Products Section -->
+    <div>
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="text-lg font-semibold text-gray-900">Products</h3>
+            <div class="w-full max-w-lg">
+                <select id="productSearch" class="w-full h-12 px-4 py-2 text-lg border-2 border-blue-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-colors duration-200"></select>
+            </div>
+        </div>
                     
                     <div class="overflow-x-auto">
                         <table class="min-w-full divide-y divide-gray-200">
@@ -102,7 +100,7 @@
                     
                     <div id="noProductsMessage" class="text-center py-8 text-gray-500">
                         <i class="material-icons text-4xl mb-2">inventory_2</i>
-                        <p>No products added yet. Click "Add Product" to get started.</p>
+                        <p>No products added yet. Use the search field above to add products.</p>
                     </div>
                 </div>
 
@@ -158,17 +156,8 @@
 <!-- Product Template -->
 <template id="productRowTemplate">
     <tr class="product-row">
-        <td class="px-6 py-4">
-            <select name="items[INDEX][product_id]" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 product-select" required>
-                <option value="">Select Product</option>
-                @foreach($products as $product)
-                    <option value="{{ $product->id }}" 
-                            data-price="{{ $product->purchase_price }}" 
-                            data-name="{{ $product->name }}">
-                        {{ $product->name }} ({{ $product->sku }})
-                    </option>
-                @endforeach
-            </select>
+        <td class="px-6 py-4 product-name-cell">
+            <!-- Product name will be inserted here -->
         </td>
         <td class="px-6 py-4">
             <input type="number" name="items[INDEX][quantity]" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 quantity-input" min="1" value="1" required>
@@ -189,80 +178,155 @@
         </td>
     </tr>
 </template>
+
 @endsection
 
 @push('scripts')
 <script>
-    let productIndex = 0;
-    const currencySymbol = '{{ config('currency.symbol') }}';
-
-    function addProduct() {
-        const template = document.getElementById('productRowTemplate').content.cloneNode(true);
-        const row = template.querySelector('tr');
-        
-        // Update template indices
-        row.innerHTML = row.innerHTML.replace(/INDEX/g, productIndex);
-        
-        document.getElementById('productsTableBody').appendChild(row);
-        productIndex++;
-        
-        // Hide no products message
-        document.getElementById('noProductsMessage').style.display = 'none';
-        
-        // Add event listeners
-        attachRowEvents(row);
-        calculateTotals();
-    }
-
-    function attachRowEvents(row) {
-        const inputs = row.querySelectorAll('input');
-        inputs.forEach(input => {
-            input.addEventListener('input', calculateTotals);
-        });
-
-        row.querySelector('.remove-product').addEventListener('click', function() {
-            row.remove();
-            if (document.querySelectorAll('.product-row').length === 0) {
-                document.getElementById('noProductsMessage').style.display = 'block';
+    document.addEventListener('DOMContentLoaded', function() {
+        // Wait for jQuery to be available
+        function waitForJQuery(callback) {
+            if (typeof window.jQuery !== 'undefined') {
+                callback();
+            } else {
+                setTimeout(function() {
+                    waitForJQuery(callback);
+                }, 100);
             }
-            calculateTotals();
+        }
+
+        waitForJQuery(function() {
+            let productIndex = 0;
+            const currencySymbol = '{{ config('currency.symbol') }}';
+
+            function addProduct(productData = null) {
+                const template = document.getElementById('productRowTemplate').content.cloneNode(true);
+                const row = template.querySelector('tr');
+                
+                // Update template indices
+                row.innerHTML = row.innerHTML.replace(/INDEX/g, productIndex);
+                
+                // If product data is provided, set up the row with product info
+                if (productData) {
+                    const productNameCell = row.querySelector('.product-name-cell');
+                    
+                    // Create hidden input for product_id
+                    const hiddenInput = document.createElement('input');
+                    hiddenInput.type = 'hidden';
+                    hiddenInput.name = `items[${productIndex}][product_id]`;
+                    hiddenInput.value = productData.id;
+                    
+                    // Create span for product name display
+                    const productNameSpan = document.createElement('span');
+                    productNameSpan.className = 'text-sm font-medium';
+                    productNameSpan.textContent = productData.text;
+                    
+                    productNameCell.appendChild(hiddenInput);
+                    productNameCell.appendChild(productNameSpan);
+                    
+                    // Set price input value - convert to number first to avoid toFixed error
+                    const price = parseFloat(productData.price) || 0;
+                    row.querySelector('.price-input').value = price.toFixed(2);
+                }
+                
+                document.getElementById('productsTableBody').appendChild(row);
+                productIndex++;
+                
+                // Hide no products message
+                document.getElementById('noProductsMessage').style.display = 'none';
+                
+                // Add event listeners
+                attachRowEvents(row);
+                calculateTotals();
+            }
+
+            function attachRowEvents(row) {
+                const inputs = row.querySelectorAll('input');
+                inputs.forEach(input => {
+                    input.addEventListener('input', calculateTotals);
+                });
+
+                row.querySelector('.remove-product').addEventListener('click', function() {
+                    row.remove();
+                    if (document.querySelectorAll('.product-row').length === 0) {
+                        document.getElementById('noProductsMessage').style.display = 'block';
+                    }
+                    calculateTotals();
+                });
+            }
+
+            function calculateTotals() {
+                let subtotal = 0;
+                let totalDiscount = 0;
+
+                document.querySelectorAll('.product-row').forEach(row => {
+                    const quantity = parseFloat(row.querySelector('.quantity-input').value) || 0;
+                    const price = parseFloat(row.querySelector('.price-input').value) || 0;
+                    const discountPercent = parseFloat(row.querySelector('.discount-input').value) || 0;
+
+                    const itemTotal = quantity * price;
+                    const itemDiscount = itemTotal * (discountPercent / 100);
+                    const itemNet = itemTotal - itemDiscount;
+
+                    row.querySelector('.item-total').textContent = currencySymbol + itemNet.toFixed(2);
+
+                    subtotal += itemTotal;
+                    totalDiscount += itemDiscount;
+                });
+
+                document.getElementById('subtotal').textContent = currencySymbol + subtotal.toFixed(2);
+                document.getElementById('discount').textContent = currencySymbol + totalDiscount.toFixed(2);
+                document.getElementById('total').textContent = currencySymbol + (subtotal - totalDiscount).toFixed(2);
+            }
+
+            // Initialize the main product search field
+            $(document).ready(function() {
+                const productSearch = $('#productSearch');
+                
+                // Check if Select2 is available and initialize
+                if (typeof $.fn.select2 !== 'undefined') {
+                    productSearch.select2({
+                        placeholder: 'Search for a product to add',
+                        ajax: {
+                            url: '{{ route("purchases.products.search") }}',
+                            dataType: 'json',
+                            delay: 250,
+                            data: function(params) {
+                                return {
+                                    q: params.term // search term
+                                };
+                            },
+                            processResults: function(data) {
+                                return {
+                                    results: data.items.map(function(product) {
+                                        return {
+                                            id: product.id,
+                                            text: product.name + ' (' + product.sku + ')',
+                                            price: product.purchase_price
+                                        };
+                                    })
+                                };
+                            },
+                            cache: true
+                        },
+                        minimumInputLength: 2
+                    }).on('select2:select', function(e) {
+                        const data = e.params.data;
+                        // Add the selected product to the table with product data
+                        addProduct({
+                            id: data.id,
+                            text: data.text,
+                            price: data.price
+                        });
+                        
+                        // Clear the search field
+                        $('#productSearch').val(null).trigger('change');
+                    });
+                }
+            });
+
+            // Don't add any products on page load - start with empty table
         });
-
-        row.querySelector('.product-select').addEventListener('change', function() {
-            const selectedOption = this.options[this.selectedIndex];
-            const price = parseFloat(selectedOption.dataset.price) || 0;
-            row.querySelector('.price-input').value = price.toFixed(2);
-            calculateTotals();
-        });
-    }
-
-    function calculateTotals() {
-        let subtotal = 0;
-        let totalDiscount = 0;
-
-        document.querySelectorAll('.product-row').forEach(row => {
-            const quantity = parseFloat(row.querySelector('.quantity-input').value) || 0;
-            const price = parseFloat(row.querySelector('.price-input').value) || 0;
-            const discountPercent = parseFloat(row.querySelector('.discount-input').value) || 0;
-
-            const itemTotal = quantity * price;
-            const itemDiscount = itemTotal * (discountPercent / 100);
-            const itemNet = itemTotal - itemDiscount;
-
-            row.querySelector('.item-total').textContent = currencySymbol + itemNet.toFixed(2);
-
-            subtotal += itemTotal;
-            totalDiscount += itemDiscount;
-        });
-
-        document.getElementById('subtotal').textContent = currencySymbol + subtotal.toFixed(2);
-        document.getElementById('discount').textContent = currencySymbol + totalDiscount.toFixed(2);
-        document.getElementById('total').textContent = currencySymbol + (subtotal - totalDiscount).toFixed(2);
-    }
-
-    document.getElementById('addProductBtn').addEventListener('click', addProduct);
-
-    // Add first product on page load
-    addProduct();
+    });
 </script>
 @endpush

@@ -11,8 +11,8 @@ window.$ = window.jQuery = $;
 
 // Initialize DataTables with all features
 document.addEventListener('DOMContentLoaded', function() {
-    // Initialize all tables with the class 'data-table'
-    const tables = document.querySelectorAll('.data-table');
+    // Initialize only tables with the class 'data-table' AND data-auto-init="true"
+    const tables = document.querySelectorAll('.data-table[data-auto-init="true"]');
     
     tables.forEach(table => {
         if (!table.classList.contains('dataTable')) {

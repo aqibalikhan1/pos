@@ -10,7 +10,7 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     
     <!-- All CSS and JS via npm/Vite -->
-    @vite(['resources/css/app.css', 'resources/css/material-theme.css', 'resources/css/datatables.css', 'resources/js/app.js', 'resources/js/datatables.js'])
+    @vite(['resources/css/app.css', 'resources/css/material-theme.css', 'resources/css/datatables.css', 'resources/js/datatables.js', 'resources/js/app.js', 'resources/js/blade-app.js'])
 </head>
 <body class="mdc-typography">
     <div class="app-container">
@@ -447,6 +447,14 @@
     </script>
     
     
+    
+    <script>
+        // Fallback to CDN if local jQuery fails to load
+        if (typeof jQuery === 'undefined') {
+            document.write('<script src="https://code.jquery.com/jquery-3.6.0.min.js"><\/script>');
+        }
+    </script>
     @stack('scripts')
+    
 </body>
 </html>
