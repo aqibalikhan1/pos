@@ -1,0 +1,53 @@
+POS SYSTEM NETWORK ACCESS SETUP
+================================
+
+SERVER INFORMATION:
+- Server IP Address: 192.168.100.7
+- Access URL: http://192.168.100.7
+
+OPTION 1: DIRECT IP ACCESS (RECOMMENDED)
+----------------------------------------
+Simply open any web browser on devices in your network and navigate to:
+http://192.168.100.7
+
+OPTION 2: HOSTS FILE SETUP (FOR pos.local DOMAIN)
+-------------------------------------------------
+On each client device, you can edit the hosts file to map pos.local to the server IP:
+
+Windows:
+1. Open Notepad as Administrator
+2. Open file: C:\Windows\System32\drivers\etc\hosts
+3. Add this line at the end:
+   192.168.100.7 pos.local www.pos.local
+4. Save the file
+
+macOS/Linux:
+1. Open terminal
+2. Edit hosts file: sudo nano /etc/hosts
+3. Add this line:
+   192.168.100.7 pos.local www.pos.local
+4. Save and exit
+
+Then access via: http://pos.local
+
+FIREWALL SETUP ON SERVER:
+-------------------------
+If other devices cannot access, run setup_firewall.bat as Administrator on the server.
+
+TESTING:
+--------
+- Run test_network_access.bat on the server to verify connectivity
+- Test from client devices using the IP address
+
+TROUBLESHOOTING:
+----------------
+1. Ensure all devices are on the same network (192.168.100.x)
+2. Check Windows Firewall settings on the server
+3. Verify WAMP Apache service is running
+4. Restart Apache if changes were made to configuration
+
+SECURITY NOTES:
+---------------
+- This setup is for local network use only
+- Consider setting up proper authentication for network access
+- For production use, consider HTTPS and proper security measures

@@ -17,8 +17,10 @@ return new class extends Migration
             $table->string('sku')->unique();
             $table->text('description')->nullable();
             
-            $table->decimal('price', 10, 2);
-            $table->decimal('cost_price', 10, 2)->nullable();
+            $table->decimal('purchase_price', 10, 2);
+            $table->decimal('trade_price', 10, 2)->nullable();
+            $table->decimal('print_price', 10, 2)->nullable();
+            $table->decimal('wholesale_price', 10, 2)->nullable();
             $table->integer('stock_quantity')->default(0);
             $table->integer('min_stock_level')->default(0);
             $table->string('barcode')->nullable();

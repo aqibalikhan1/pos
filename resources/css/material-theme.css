@@ -67,10 +67,88 @@
   width: 280px;
   background: var(--md-surface);
   box-shadow: var(--md-elevation-3);
-  transition: transform 0.3s ease;
+  transition: all 0.3s ease;
   z-index: 1000;
   display: flex;
   flex-direction: column;
+}
+
+/* Collapsed Sidebar State */
+.sidebar-collapsed {
+  width: 80px;
+}
+
+.sidebar-collapsed .sidebar-title,
+.sidebar-collapsed .sidebar-nav-link span,
+.sidebar-collapsed .sidebar-footer p,
+.sidebar-collapsed .sidebar-footer span,
+.sidebar-collapsed .sidebar-nav-item.has-submenu .sidebar-nav-link::after {
+  display: none;
+}
+
+.sidebar-collapsed .sidebar-nav-link {
+  justify-content: center;
+  padding: 1rem;
+}
+
+.sidebar-collapsed .sidebar-nav-icon {
+  margin-right: 0;
+  font-size: 1.5rem;
+}
+
+.sidebar-collapsed .sidebar-submenu {
+  display: none;
+}
+
+.sidebar-collapsed .sidebar-footer .flex.items-center {
+  justify-content: center;
+}
+
+.sidebar-collapsed .sidebar-footer .w-8 {
+  margin-right: 0;
+}
+
+.sidebar-collapsed .sidebar-footer .text-sm,
+.sidebar-collapsed .sidebar-footer .text-xs {
+  display: none;
+}
+
+.sidebar-collapsed .sidebar-footer .space-y-2 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.sidebar-collapsed .sidebar-footer .space-y-2 a,
+.sidebar-collapsed .sidebar-footer .space-y-2 button {
+  width: 40px;
+  height: 40px;
+  padding: 0.5rem;
+  justify-content: center;
+}
+
+.sidebar-collapsed .sidebar-footer .space-y-2 span {
+  display: none;
+}
+
+/* Toggle Button */
+.sidebar-toggle {
+  background: none;
+  border: none;
+  color: var(--md-on-surface-variant);
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.sidebar-toggle:hover {
+  background: var(--md-surface-variant);
+  color: var(--md-on-surface);
+}
+
+.sidebar-collapsed .sidebar-toggle i {
+  transform: rotate(180deg);
 }
 
 .sidebar-header {
@@ -211,6 +289,14 @@
   min-height: 100vh;
   background: var(--md-background);
   transition: margin-left 0.3s ease;
+}
+
+.sidebar-collapsed + .main-content {
+  margin-left: 80px; /* fallback */
+}
+
+.main-content.main-content-collapsed {
+  margin-left: 80px;
 }
 
 .content-area {

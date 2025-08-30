@@ -24,6 +24,9 @@
             <div class="sidebar-header">
                 <div class="flex items-center justify-between">
                     <h3 class="sidebar-title">POS System</h3>
+                    <button id="sidebar-toggle" class="sidebar-toggle" title="Toggle Menu">
+                        <i class="material-icons">chevron_left</i>
+                    </button>
                     <button class="mobile-menu-close md:hidden">
                         <i class="material-icons">close</i>
                     </button>
@@ -39,9 +42,16 @@
                 </li>
                 
                 <li class="sidebar-nav-item">
-                    <a href="{{ route('pos.dashboard') }}" class="sidebar-nav-link {{ request()->routeIs('pos.dashboard') ? 'active' : '' }}">
+                    <a href="{{ route('pos.terminal') }}" class="sidebar-nav-link {{ request()->routeIs('pos.terminal') ? 'active' : '' }}">
                         <i class="material-icons sidebar-nav-icon">point_of_sale</i>
                         <span>POS Terminal</span>
+                    </a>
+                </li>
+                
+                <li class="sidebar-nav-item">
+                    <a href="{{ route('pos.dashboard') }}" class="sidebar-nav-link {{ request()->routeIs('pos.dashboard') ? 'active' : '' }}">
+                        <i class="material-icons sidebar-nav-icon">dashboard</i>
+                        <span>POS Dashboard</span>
                     </a>
                 </li>
                 
@@ -299,114 +309,143 @@
         </main>
     </div>
 
-    <!-- All Scripts via npm/Vite -->
-    @vite(['resources/js/app.js', 'resources/js/datatables.js'])
-    
     <script>
-        // Initialize Material Components
-        if (typeof mdc !== 'undefined') {
-            mdc.autoInit();
-        }
-        
-        // Mobile Menu Toggle
-        const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
-        const mobileMenuClose = document.querySelector('.mobile-menu-close');
-        const sidebar = document.querySelector('.sidebar');
-        
-        if (mobileMenuToggle) {
-            mobileMenuToggle.addEventListener('click', () => {
-                sidebar.classList.add('open');
-            });
-        }
-        
-        if (mobileMenuClose) {
-            mobileMenuClose.addEventListener('click', () => {
-                sidebar.classList.remove('open');
-            });
-        }
-        
-        // Theme Toggle
-        const themeToggle = document.getElementById('theme-toggle');
-        const html = document.documentElement;
-        
-        themeToggle.addEventListener('click', () => {
-            const currentTheme = html.getAttribute('data-theme');
-            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-            html.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
-        });
-        
-        // Load saved theme
-        const savedTheme = localStorage.getItem('theme') || 'light';
-        html.setAttribute('data-theme', savedTheme);
-        
-        // Initialize DataTables
-        document.addEventListener('DOMContentLoaded', function() {
-            // DataTables will be initialized via the imported datatables.js
-        });
-        
-        // Close sidebar when clicking outside on mobile
-        document.addEventListener('click', (e) => {
-            if (window.innerWidth <= 768 && sidebar && !sidebar.contains(e.target) && !mobileMenuToggle.contains(e.target)) {
-                sidebar.classList.remove('open');
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize Material Components
+            if (typeof mdc !== 'undefined') {
+                mdc.autoInit();
             }
-        });
 
-        // User Menu Dropdown
-        const userMenuButton = document.getElementById('user-menu-button');
-        const userMenuDropdown = document.getElementById('user-menu-dropdown');
-        const userMenu = document.getElementById('user-menu');
+            // Mobile Menu Toggle
+            const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+            const mobileMenuClose = document.querySelector('.mobile-menu-close');
+            const sidebar = document.querySelector('.sidebar');
 
-        if (userMenuButton && userMenuDropdown) {
-            userMenuButton.addEventListener('click', (e) => {
-                e.stopPropagation();
-                userMenuDropdown.classList.toggle('hidden');
-            });
-
-            // Close dropdown when clicking outside
-            document.addEventListener('click', (e) => {
-                if (!userMenu.contains(e.target)) {
-                    userMenuDropdown.classList.add('hidden');
-                }
-            });
-
-            // Close dropdown when pressing Escape
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape') {
-                    userMenuDropdown.classList.add('hidden');
-                }
-            });
-        }
-
-        // Submenu Toggle Functionality
-        const submenuItems = document.querySelectorAll('.sidebar-nav-item.has-submenu');
-        
-        submenuItems.forEach(item => {
-            const link = item.querySelector('.sidebar-nav-link');
-            const submenu = item.querySelector('.sidebar-submenu');
-            
-            if (link && submenu) {
-                link.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    
-                    // Toggle current submenu
-                    item.classList.toggle('open');
-                    submenu.classList.toggle('open');
-                    
-                    // Close other submenus (optional)
-                    submenuItems.forEach(otherItem => {
-                        if (otherItem !== item) {
-                            otherItem.classList.remove('open');
-                            const otherSubmenu = otherItem.querySelector('.sidebar-submenu');
-                            if (otherSubmenu) {
-                                otherSubmenu.classList.remove('open');
-                            }
-                        }
-                    });
+            if (mobileMenuToggle) {
+                mobileMenuToggle.addEventListener('click', () => {
+                    sidebar.classList.add('open');
                 });
+            }
+
+            if (mobileMenuClose) {
+                mobileMenuClose.addEventListener('click', () => {
+                    sidebar.classList.remove('open');
+                });
+            }
+
+            // Theme Toggle
+            const themeToggle = document.getElementById('theme-toggle');
+            const html = document.documentElement;
+
+            themeToggle.addEventListener('click', () => {
+                const currentTheme = html.getAttribute('data-theme');
+                const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+                html.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+            });
+
+            // Load saved theme
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            html.setAttribute('data-theme', savedTheme);
+
+            // Initialize DataTables
+            // DataTables will be initialized via the imported datatables.js
+
+            // Close sidebar when clicking outside on mobile
+            document.addEventListener('click', (e) => {
+                if (window.innerWidth <= 768 && sidebar && !sidebar.contains(e.target) && !mobileMenuToggle.contains(e.target)) {
+                    sidebar.classList.remove('open');
+                }
+            });
+
+            // User Menu Dropdown
+            const userMenuButton = document.getElementById('user-menu-button');
+            const userMenuDropdown = document.getElementById('user-menu-dropdown');
+            const userMenu = document.getElementById('user-menu');
+
+            if (userMenuButton && userMenuDropdown) {
+                userMenuButton.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    userMenuDropdown.classList.toggle('hidden');
+                });
+
+                // Close dropdown when clicking outside
+                document.addEventListener('click', (e) => {
+                    if (!userMenu.contains(e.target)) {
+                        userMenuDropdown.classList.add('hidden');
+                    }
+                });
+
+                // Close dropdown when pressing Escape
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape') {
+                        userMenuDropdown.classList.add('hidden');
+                    }
+                });
+            }
+
+            // Submenu Toggle Functionality
+            const submenuItems = document.querySelectorAll('.sidebar-nav-item.has-submenu');
+
+            submenuItems.forEach(item => {
+                const link = item.querySelector('.sidebar-nav-link');
+                const submenu = item.querySelector('.sidebar-submenu');
+
+                if (link && submenu) {
+                    link.addEventListener('click', (e) => {
+                        e.preventDefault();
+
+                        // Toggle current submenu
+                        item.classList.toggle('open');
+                        submenu.classList.toggle('open');
+
+                        // Close other submenus (optional)
+                        submenuItems.forEach(otherItem => {
+                            if (otherItem !== item) {
+                                otherItem.classList.remove('open');
+                                const otherSubmenu = otherItem.querySelector('.sidebar-submenu');
+                                if (otherSubmenu) {
+                                    otherSubmenu.classList.remove('open');
+                                }
+                            }
+                        });
+                    });
+                }
+            });
+
+            // Sidebar Toggle Functionality
+            console.log('Starting sidebar toggle setup');
+            const sidebarToggle = document.getElementById('sidebar-toggle');
+            console.log('sidebarToggle:', sidebarToggle);
+            const sidebarElement = document.querySelector('.sidebar');
+            console.log('sidebarElement:', sidebarElement);
+            const mainContentElement = document.querySelector('.main-content');
+            console.log('mainContentElement:', mainContentElement);
+            
+            if (sidebarToggle && sidebarElement && mainContentElement) {
+                console.log('Sidebar toggle, sidebar, and main content found');
+                // Load saved sidebar state
+                const isCollapsed = localStorage.getItem('sidebar-collapsed') === 'true';
+                console.log('Loaded sidebar collapsed state:', isCollapsed);
+                if (isCollapsed) {
+                    sidebarElement.classList.add('sidebar-collapsed');
+                    mainContentElement.classList.add('main-content-collapsed');
+                }
+
+                sidebarToggle.addEventListener('click', () => {
+                    console.log('Sidebar toggle clicked');
+                    sidebarElement.classList.toggle('sidebar-collapsed');
+                    mainContentElement.classList.toggle('main-content-collapsed');
+                    const collapsed = sidebarElement.classList.contains('sidebar-collapsed');
+                    console.log('Sidebar collapsed state after toggle:', collapsed);
+                    localStorage.setItem('sidebar-collapsed', collapsed);
+                });
+            } else {
+                console.log('Sidebar toggle, sidebar, or main content not found');
             }
         });
     </script>
+    
     
     @stack('scripts')
 </body>

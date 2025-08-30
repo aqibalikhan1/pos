@@ -13,7 +13,7 @@
                 <i class="material-icons">account_balance_wallet</i>
             </div>
             <div class="stats-card-title">Total Expenses</div>
-            <div class="stats-card-value">${{ number_format($totalExpenses, 2) }}</div>
+            <div class="stats-card-value">{{ \App\Helpers\CurrencyHelper::formatAmount($totalExpenses) }}</div>
             <div class="stats-card-subtitle">All time total</div>
         </div>
         
@@ -31,7 +31,7 @@
                 <i class="material-icons">trending_up</i>
             </div>
             <div class="stats-card-title">Average Expense</div>
-            <div class="stats-card-value">${{ number_format($averageExpense, 2) }}</div>
+            <div class="stats-card-value">{{ \App\Helpers\CurrencyHelper::formatAmount($averageExpense) }}</div>
             <div class="stats-card-subtitle">Per transaction</div>
         </div>
         
@@ -40,7 +40,7 @@
                 <i class="material-icons">calendar_today</i>
             </div>
             <div class="stats-card-title">This Month</div>
-            <div class="stats-card-value">${{ number_format($thisMonthExpenses, 2) }}</div>
+            <div class="stats-card-value">{{ \App\Helpers\CurrencyHelper::formatAmount($thisMonthExpenses) }}</div>
             <div class="stats-card-subtitle">{{ now()->format('F Y') }}</div>
         </div>
     </div>
@@ -62,7 +62,7 @@
                             <span class="font-medium">{{ $category->category->name ?? 'Uncategorized' }}</span>
                         </div>
                         <div class="text-right">
-                            <div class="font-bold text-gray-900">${{ number_format($category->total, 2) }}</div>
+                            <div class="font-bold text-gray-900">{{ \App\Helpers\CurrencyHelper::formatAmount($category->total) }}</div>
                             <div class="text-sm text-gray-500">{{ number_format(($category->total / $totalExpenses) * 100, 1) }}%</div>
                         </div>
                     </div>
@@ -97,7 +97,7 @@
                     @foreach($monthlyTrend as $month)
                     <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                         <span class="font-medium">{{ $month->month_name }}</span>
-                        <span class="font-bold text-gray-900">${{ number_format($month->total, 2) }}</span>
+                        <span class="font-bold text-gray-900">{{ \App\Helpers\CurrencyHelper::formatAmount($month->total) }}</span>
                     </div>
                     @endforeach
                 </div>
@@ -138,7 +138,7 @@
                                 {{ Str::limit($expense->description, 30) }}
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                ${{ number_format($expense->amount, 2) }}
+                                {{ \App\Helpers\CurrencyHelper::formatAmount($expense->amount) }}
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                 <a href="{{ route('expenses.show', $expense) }}" class="text-indigo-600 hover:text-indigo-900">View</a>

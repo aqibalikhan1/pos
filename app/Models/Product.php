@@ -14,8 +14,10 @@ class Product extends Model
         'name',
         'description',
         'sku',
-        'price',
-        'cost_price',
+        'purchase_price',
+        'trade_price',
+        'print_price',
+        'wholesale_price',
         'category_id',
         'stock_quantity',
         'min_stock_level',
@@ -27,8 +29,10 @@ class Product extends Model
     ];
 
     protected $casts = [
-        'price' => 'decimal:2',
-        'cost_price' => 'decimal:2',
+        'purchase_price' => 'decimal:2',
+        'trade_price' => 'decimal:2',
+        'print_price' => 'decimal:2',
+        'wholesale_price' => 'decimal:2',
         'is_active' => 'boolean',
         'pieces_per_pack' => 'integer'
     ];
@@ -55,7 +59,7 @@ class Product extends Model
 
     public function getFormattedPriceAttribute()
     {
-        return number_format($this->price, 2);
+        return number_format($this->purchase_price, 2);
     }
 
     public function getStockStatusAttribute()

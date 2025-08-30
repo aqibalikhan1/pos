@@ -135,7 +135,7 @@
                                                 <option value="">Select Product</option>
                                                 @foreach($products as $product)
                                                     <option value="{{ $product->id }}" 
-                                                            data-price="{{ $product->price }}" 
+                                                            data-price="{{ $product->purchase_price }}" 
                                                             data-name="{{ $product->name }}"
                                                             {{ $item->product_id == $product->id ? 'selected' : '' }}>
                                                         {{ $product->name }} ({{ $product->sku }})
@@ -238,11 +238,11 @@
             <select name="items[INDEX][product_id]" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 product-select" required>
                 <option value="">Select Product</option>
                 @foreach($products as $product)
-                    <option value="{{ $product->id }}" 
-                            data-price="{{ $product->price }}" 
-                            data-name="{{ $product->name }}">
-                        {{ $product->name }} ({{ $product->sku }})
-                    </option>
+                                                    <option value="{{ $product->id }}" 
+                                                            data-price="{{ $product->purchase_price }}" 
+                                                            data-name="{{ $product->name }}">
+                                                        {{ $product->name }} ({{ $product->sku }})
+                                                    </option>
                 @endforeach
             </select>
         </td>

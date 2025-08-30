@@ -64,13 +64,23 @@
                         <h3 class="text-lg font-semibold text-gray-900">Pricing & Stock</h3>
                         
                         <div>
-                            <label class="block text-sm font-medium text-gray-700">Price</label>
-                            <p class="mt-1 text-sm text-gray-900">{{ \App\Helpers\CurrencyHelper::formatAmount($product->price) }}</p>
+                            <label class="block text-sm font-medium text-gray-700">Purchase Price (Cost)</label>
+                            <p class="mt-1 text-sm text-gray-900">{{ \App\Helpers\CurrencyHelper::formatAmount($product->purchase_price) }}</p>
                         </div>
 
                         <div>
-                            <label class="block text-sm font-medium text-gray-700">Cost Price</label>
-                            <p class="mt-1 text-sm text-gray-900">{{ \App\Helpers\CurrencyHelper::formatAmount($product->cost_price ?? 0) }}</p>
+                            <label class="block text-sm font-medium text-gray-700">Trade Price</label>
+                            <p class="mt-1 text-sm text-gray-900">{{ \App\Helpers\CurrencyHelper::formatAmount($product->trade_price) }}</p>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Print Price</label>
+                            <p class="mt-1 text-sm text-gray-900">{{ \App\Helpers\CurrencyHelper::formatAmount($product->print_price) }}</p>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Wholesale Price</label>
+                            <p class="mt-1 text-sm text-gray-900">{{ \App\Helpers\CurrencyHelper::formatAmount($product->wholesale_price) }}</p>
                         </div>
 
                         <div>

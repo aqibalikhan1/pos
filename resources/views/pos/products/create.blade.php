@@ -103,7 +103,7 @@
                         @enderror
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <!-- Company -->
                         <div class="space-y-2">
                             <label for="company_id" class="block text-sm font-semibold text-gray-700">
@@ -149,7 +149,7 @@
                                     @endforeach
                                 </select>
                                 <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                                    <i class="material-icons text-gray-400">arrow_drop_down</i>
+                <i class="material-icons text-gray-400">arrow_drop_down</i>
                                 </div>
                             </div>
                             @error('category_id')
@@ -160,29 +160,9 @@
                             @enderror
                         </div>
 
-                        <!-- Price -->
-                        <div class="space-y-2">
-                            <label for="price" class="block text-sm font-semibold text-gray-700">
-                                <i class="material-icons text-sm align-middle mr-1 text-blue-600">attach_money</i>
-                                Price *
-                            </label>
-                            <div class="relative">
-                                <input type="number" name="price" id="price" step="0.01" value="{{ old('price') }}" required 
-                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 @error('price') border-red-500 ring-red-200 @enderror"
-                                       placeholder="0.00">
-                                <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                                    <span class="text-gray-400">$</span>
-                                </div>
-                            </div>
-                            @error('price')
-                                <p class="text-red-500 text-xs mt-1 flex items-center">
-                                    <i class="material-icons text-xs mr-1">error</i>
-                                    {{ $message }}
-                                </p>
-                            @enderror
-                        </div>
+                       
                     </div>
-                </div>
+                                </div>
 
                 <!-- Pricing & Stock Section -->
                 <div class="space-y-6">
@@ -194,22 +174,22 @@
                         <p class="text-sm text-gray-600 mt-1">Financial and inventory details</p>
                     </div>
                     
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <!-- Cost Price -->
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                        <!-- Purchase Price -->
                         <div class="space-y-2">
-                            <label for="cost_price" class="block text-sm font-semibold text-gray-700">
-                                <i class="material-icons text-sm align-middle mr-1 text-blue-600">paid</i>
-                                Cost Price
+                            <label for="purchase_price" class="block text-sm font-semibold text-gray-700">
+                                <i class="material-icons text-sm align-middle mr-1 text-blue-600">shopping_cart</i>
+                                Purchase Price *
                             </label>
                             <div class="relative">
-                                <input type="number" name="cost_price" id="cost_price" step="0.01" value="{{ old('cost_price') }}" 
-                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 @error('cost_price') border-red-500 ring-red-200 @enderror"
+                                <input type="number" name="purchase_price" id="purchase_price" step="0.01" value="{{ old('purchase_price', 0) }}" required 
+                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 @error('purchase_price') border-red-500 ring-red-200 @enderror"
                                        placeholder="0.00">
                                 <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                                    <span class="text-gray-400">$</span>
+                                    <span class="text-gray-400">{{ \App\Helpers\CurrencyHelper::getCurrencySymbol() }}</span>
                                 </div>
                             </div>
-                            @error('cost_price')
+                            @error('purchase_price')
                                 <p class="text-red-500 text-xs mt-1 flex items-center">
                                     <i class="material-icons text-xs mr-1">error</i>
                                     {{ $message }}
@@ -217,6 +197,74 @@
                             @enderror
                         </div>
 
+                        <!-- Trade Price -->
+                        <div class="space-y-2">
+                            <label for="trade_price" class="block text-sm font-semibold text-gray-700">
+                                <i class="material-icons text-sm align-middle mr-1 text-blue-600">store</i>
+                                Trade Price *
+                            </label>
+                            <div class="relative">
+                                <input type="number" name="trade_price" id="trade_price" step="0.01" value="{{ old('trade_price', 0) }}" required 
+                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 @error('trade_price') border-red-500 ring-red-200 @enderror"
+                                       placeholder="0.00">
+                                <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                                    <span class="text-gray-400">{{ \App\Helpers\CurrencyHelper::getCurrencySymbol() }}</span>
+                                </div>
+                            </div>
+                            @error('trade_price')
+                                <p class="text-red-500 text-xs mt-1 flex items-center">
+                                    <i class="material-icons text-xs mr-1">error</i>
+                                    {{ $message }}
+                                </p>
+                            @enderror
+                        </div>
+
+                        <!-- Print Price -->
+                        <div class="space-y-2">
+                            <label for="print_price" class="block text-sm font-semibold text-gray-700">
+                                <i class="material-icons text-sm align-middle mr-1 text-blue-600">print</i>
+                                Print Price *
+                            </label>
+                            <div class="relative">
+                                <input type="number" name="print_price" id="print_price" step="0.01" value="{{ old('print_price', 0) }}" required 
+                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 @error('print_price') border-red-500 ring-red-200 @enderror"
+                                       placeholder="0.00">
+                                <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                                    <span class="text-gray-400">{{ \App\Helpers\CurrencyHelper::getCurrencySymbol() }}</span>
+                                </div>
+                            </div>
+                            @error('print_price')
+                                <p class="text-red-500 text-xs mt-1 flex items-center">
+                                    <i class="material-icons text-xs mr-1">error</i>
+                                    {{ $message }}
+                                </p>
+                            @enderror
+                        </div>
+
+                        <!-- Wholesale Price -->
+                        <div class="space-y-2">
+                            <label for="wholesale_price" class="block text-sm font-semibold text-gray-700">
+                                <i class="material-icons text-sm align-middle mr-1 text-blue-600">local_shipping</i>
+                                Wholesale Price *
+                            </label>
+                            <div class="relative">
+                                <input type="number" name="wholesale_price" id="wholesale_price" step="0.01" value="{{ old('wholesale_price', 0) }}" required 
+                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 @error('wholesale_price') border-red-500 ring-red-200 @enderror"
+                                       placeholder="0.00">
+                                <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                                    <span class="text-gray-400">{{ \App\Helpers\CurrencyHelper::getCurrencySymbol() }}</span>
+                                </div>
+                            </div>
+                            @error('wholesale_price')
+                                <p class="text-red-500 text-xs mt-1 flex items-center">
+                                    <i class="material-icons text-xs mr-1">error</i>
+                                    {{ $message }}
+                                </p>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <!-- Stock Quantity -->
                         <div class="space-y-2">
                             <label for="stock_quantity" class="block text-sm font-semibold text-gray-700">

@@ -43,14 +43,14 @@
                     </div>
 
                     <div>
-                        <label for="symbol" class="block text-sm font-medium text-gray-700">Symbol</label>
+                        <label for="currency_symbol" class="block text-sm font-medium text-gray-700">Symbol</label>
                         <input type="text" 
-                               name="symbol" 
-                               id="symbol" 
-                               value="{{ old('symbol') }}"
+                               name="currency_symbol" 
+                               id="currency_symbol" 
+                               value="{{ old('currency_symbol') }}"
                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                                required>
-                        @error('symbol')
+                        @error('currency_symbol')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                         @enderror
                     </div>

@@ -4,22 +4,33 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\Category;
+use App\Models\Company;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use App\Imports\ProductImport;
+use Maatwebsite\Excel\Facades\Excel;
+use Yajra\DataTables\Facades\DataTables;
+use App\DataTables\ProductDataTable;
 
 class ProductController extends Controller
 {
     /**
      * Display a listing of the products.
      */
+
     public function index()
     {
-        $products = Product::with(['category', 'company'])->get();
+          $products = Product::with(['category', 'company'])->get();
         $lowStockCount = Product::whereColumn('stock_quantity', '<=', 'min_stock_level')->count();
         
-        $totalValue = Product::selectRaw('SUM(price * stock_quantity) as total_value')->value('total_value');
+        $totalValue = Product::selectRaw('SUM(purchase_price * stock_quantity) as total_value')->value('total_value');
         
         return view('pos.products.index', compact('products', 'lowStockCount', 'totalValue'));
+    }
+
+    public function getProducts()
+    {
+        return (new ProductDataTable())->ajax();
     }
 
     /**
@@ -43,9 +54,12 @@ class ProductController extends Controller
             'name' => 'required|string|max:255',
             'sku' => 'required|string|unique:products|max:100',
             'description' => 'nullable|string',
+            'company_id' => 'required|exists:companies,id',
             'category_id' => 'required|exists:categories,id',
-            'price' => 'required|numeric|min:0',
-            'cost_price' => 'nullable|numeric|min:0',
+            'purchase_price' => 'required|numeric|min:0',
+            'trade_price' => 'required|numeric|min:0',
+            'print_price' => 'required|numeric|min:0',
+            'wholesale_price' => 'required|numeric|min:0',
             'stock_quantity' => 'required|integer|min:0',
             'min_stock_level' => 'nullable|integer|min:0',
             'barcode' => 'nullable|string|max:50',
@@ -108,10 +122,12 @@ class ProductController extends Controller
             'name' => 'required|string|max:255',
             'sku' => 'required|string|max:100|unique:products,sku,' . $product->id,
             'description' => 'nullable|string',
-            'category_id' => 'required|exists:categories,id',
             'company_id' => 'required|exists:companies,id',
-            'price' => 'required|numeric|min:0',
-            'cost_price' => 'nullable|numeric|min:0',
+            'category_id' => 'required|exists:categories,id',
+            'purchase_price' => 'required|numeric|min:0',
+            'trade_price' => 'required|numeric|min:0',
+            'print_price' => 'required|numeric|min:0',
+            'wholesale_price' => 'required|numeric|min:0',
             'stock_quantity' => 'required|integer|min:0',
             'min_stock_level' => 'nullable|integer|min:0',
             'barcode' => 'nullable|string|max:50',
@@ -152,5 +168,32 @@ class ProductController extends Controller
 
         return redirect()->route('products.index')
             ->with('success', 'Product deleted successfully.');
+    }
+
+    /**
+     * Show the form for importing products.
+     */
+    public function importForm()
+    {
+        return view('pos.products.import');
+    }
+
+    /**
+     * Handle the product import.
+     */
+    public function import(Request $request)
+    {
+        $request->validate([
+            'import_file' => 'required|file|mimes:xlsx,xls,csv',
+        ]);
+
+        try {
+            Excel::import(new ProductImport, $request->file('import_file'));
+        } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
+            $failures = $e->failures();
+            return back()->withFailures($failures);
+        }
+
+        return redirect()->route('products.index')->with('success', 'Products imported successfully.');
     }
 }

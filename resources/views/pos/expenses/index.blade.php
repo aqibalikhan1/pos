@@ -13,7 +13,7 @@
                 <i class="material-icons">account_balance_wallet</i>
             </div>
             <div class="stats-card-title">Total Expenses</div>
-            <div class="stats-card-value">${{ number_format($expenses->sum('amount'), 2) }}</div>
+            <div class="stats-card-value">{{ \App\Helpers\CurrencyHelper::formatAmount($expenses->sum('amount')) }}</div>
         </div>
         
         <div class="stats-card">
@@ -132,8 +132,7 @@
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                    <i class="material-icons text-xs mr-1">attach_money</i>
-                                    ${{ number_format($expense->amount, 2) }}
+                                    {{ \App\Helpers\CurrencyHelper::formatAmount($expense->amount) }}
                                 </span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">

@@ -44,7 +44,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Amount</label>
-                                <p class="form-control-static">${{ number_format($expense->amount, 2) }}</p>
+                                <p class="form-control-static">{{ \App\Helpers\CurrencyHelper::formatAmount($expense->amount) }}</p>
                             </div>
                         </div>
                     </div>

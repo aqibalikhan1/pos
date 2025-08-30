@@ -59,6 +59,8 @@ Route::middleware([
         // Product Management
         Route::resource('products', ProductController::class);
         Route::get('products/data', [ProductController::class, 'getProducts'])->name('products.data');
+        Route::get('products/import', [ProductController::class, 'importForm'])->name('products.import.form');
+        Route::post('products/import', [ProductController::class, 'import'])->name('products.import');
         
         // Sale Invoice Management
         Route::resource('sale-invoices', SaleInvoiceController::class);

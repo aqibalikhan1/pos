@@ -163,7 +163,7 @@
                 <option value="">Select Product</option>
                 @foreach($products as $product)
                     <option value="{{ $product->id }}" 
-                            data-price="{{ $product->price }}" 
+                            data-price="{{ $product->purchase_price }}" 
                             data-name="{{ $product->name }}">
                         {{ $product->name }} ({{ $product->sku }})
                     </option>

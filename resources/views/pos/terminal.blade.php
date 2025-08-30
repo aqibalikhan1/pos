@@ -92,7 +92,7 @@
                     <div class="mt-6 p-4 bg-gray-50 rounded-lg">
                         <div class="flex justify-between items-center">
                             <span class="text-lg font-semibold text-gray-800">Total Amount:</span>
-                            <span id="totalAmount" class="text-2xl font-bold text-green-600">$0.00</span>
+                            <span id="totalAmount" class="text-2xl font-bold text-green-600">{{ \App\Helpers\CurrencyHelper::formatAmount(0) }}</span>
                         </div>
                     </div>
 

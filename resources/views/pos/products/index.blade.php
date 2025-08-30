@@ -82,8 +82,26 @@
                             </th>
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
                                 <div class="flex items-center">
-                                    <i class="material-icons text-sm mr-1">attach_money</i>
-                                    Price
+                                    <i class="material-icons text-sm mr-1">shopping_cart</i>
+                                    Purchase
+                                </div>
+                            </th>
+                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                                <div class="flex items-center">
+                                    <i class="material-icons text-sm mr-1">store</i>
+                                    Trade
+                                </div>
+                            </th>
+                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                                <div class="flex items-center">
+                                    <i class="material-icons text-sm mr-1">print</i>
+                                    Print
+                                </div>
+                            </th>
+                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                                <div class="flex items-center">
+                                    <i class="material-icons text-sm mr-1">local_shipping</i>
+                                    Wholesale
                                 </div>
                             </th>
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
@@ -134,7 +152,16 @@
                                 </span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="text-sm font-semibold text-green-600">{{ \App\Helpers\CurrencyHelper::formatAmount($product->price) }}</span>
+                                <span class="text-sm font-semibold text-blue-600">{{ \App\Helpers\CurrencyHelper::formatAmount($product->purchase_price) }}</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-sm font-semibold text-green-600">{{ \App\Helpers\CurrencyHelper::formatAmount($product->trade_price) }}</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-sm font-semibold text-purple-600">{{ \App\Helpers\CurrencyHelper::formatAmount($product->print_price) }}</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-sm font-semibold text-orange-600">{{ \App\Helpers\CurrencyHelper::formatAmount($product->wholesale_price) }}</span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 @if($product->stock_quantity <= 0)
@@ -187,7 +214,7 @@
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="9" class="px-6 py-12 text-center">
+                            <td colspan="11" class="px-6 py-12 text-center">
                                 <div class="flex flex-col items-center">
                                     <i class="material-icons text-6xl text-gray-300 mb-4">inventory_2</i>
                                     <p class="text-gray-500 text-lg mb-4">No products found</p>

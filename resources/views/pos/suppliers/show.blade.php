@@ -82,7 +82,7 @@
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div class="bg-blue-50 p-4 rounded-lg">
                             <dt class="text-sm font-medium text-blue-900">Total Purchases</dt>
-                            <dd class="mt-1 text-2xl font-semibold text-blue-600">Rs {{ number_format($supplier->total_purchases, 2) }}</dd>
+                            <dd class="mt-1 text-2xl font-sem极text-blue-600">{{ \App\Helpers\CurrencyHelper::formatAmount($supplier->total_purchases) }}</dd>
                         </div>
                         <div class="bg-green-50 p-4 rounded-lg">
                             <dt class="text-sm font-medium text-green-900">Total Payments</dt>
@@ -90,7 +90,7 @@
                         </div>
                         <div class="bg-red-50 p-4 rounded-lg">
                             <dt class="text-sm font-medium text-red-900">Outstanding Balance</dt>
-                            <dd class="mt-1 text-2xl font-semibold text-red-600">Rs {{ number_format($supplier->outstanding_balance, 2) }}</dd>
+                            <dd class="mt-1 text-2xl font-semibold text-red-600">{{ \App\Helpers\CurrencyHelper::formatAmount($supplier->outstanding_balance) }}</dd>
                         </div>
                     </div>
                 </div>
@@ -102,7 +102,7 @@
                         @foreach($supplier->purchase_statistics as $status => $data)
                         <div class="bg-yellow-50 p-4 rounded-lg">
                             <dt class="text-sm font-medium text-yellow-900">{{ ucfirst($status) }} Purchases</dt>
-                            <dd class="mt-1 text-2xl font-semibold text-yellow-600">{{ $data['count'] }} (Rs {{ number_format($data['total_amount'], 2) }})</dd>
+                            <dd class="mt-1 text-2xl font-semibold text-yellow-600">{{ $data['count'] }} ({{ \App\Helpers\CurrencyHelper::formatAmount($data['total_amount']) }})</dd>
                         </div>
                         @endforeach
                     </div>
@@ -127,7 +127,7 @@
                     <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
                         <div class="bg-gray-50 p-4 rounded-lg">
                             <dt class="text-sm font-medium text-gray-900">Current</dt>
-                            <dd class="mt-1 text-2xl font-semibold text-gray-600">Rs {{ number_format($supplier->aging_analysis['current'], 2) }}</dd>
+                            <dd class="mt-1 text-2xl font-semibold text-gray-600">{{ \App\Helpers\CurrencyHelper::formatAmount($supplier->aging_analysis['current']) }}</dd>
                         </div>
                         <div class="bg-gray-50 p-4 rounded-lg">
                             <dt class="text-sm font-medium text-gray-900">1-30 Days</dt>
@@ -135,11 +135,11 @@
                         </div>
                         <div class="bg-gray-50 p-4 rounded-lg">
                             <dt class="text-sm font-medium text-gray-900">31-60 Days</dt>
-                            <dd class="mt-1 text-2xl font-semibold text-gray-600">Rs {{ number_format($supplier->aging_analysis['31-60'], 2) }}</dd>
+                            <dd class="mt-1极text-2xl font-semibold text-gray-600">{{ \App\Helpers极CurrencyHelper::formatAmount($supplier->aging_analysis['31-60']) }}</dd>
                         </div>
                         <div class="bg-gray-50 p-4 rounded-lg">
                             <dt class="text-sm font-medium text-gray-900">61-90 Days</dt>
-                            <dd class="mt-1 text-2xl font-semibold text-gray-600">Rs {{ number_format($supplier->aging_analysis['61-90'], 2) }}</dd>
+                            <dd class="mt-1 text-2xl font-semibold text-gray-600">{{ \App\Helpers\CurrencyHelper::formatAmount($supplier->aging_analysis['61-90']) }}</dd>
                         </div>
                         <div class="bg-gray-50 p-4 rounded-lg">
                             <dt class="text-sm font-medium text-gray-900">Over 90 Days</dt>
@@ -159,13 +159,13 @@
                         </div>
                         <div class="bg-orange-50 p-4 rounded-lg">
                             <dt class="text-sm font-medium text-orange-900">Account Balance</dt>
-                            <dd class="mt-1 text-2xl font-semibold text-orange-600">Rs {{ number_format($account->current_balance, 2) }}</dd>
+                            <dd class="mt-1 text-2xl font-semibold text-orange-600">{{ \App\Helpers\CurrencyHelper::formatAmount($account->current_balance) }}</dd>
                         </div>
                     </div>
                     <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div class="bg-gray-50 p-4 rounded-lg">
                             <dt class="text-sm font-medium text-gray-900">Opening Balance</dt>
-                            <dd class="mt-1 text-lg text-gray-700">Rs {{ number_format($account->opening_balance, 2) }}</dd>
+                            <dd class="mt-1 text-lg text-gray-700">{{ \App\Helpers\CurrencyHelper::formatAmount($account->opening_balance) }}</dd>
                         </div>
                         <div class="bg-gray-50 p-4 rounded-lg">
                             <dt class="text-sm font-medium text-gray-900">Account Status</dt>
@@ -199,7 +199,7 @@
                                 <tr>
                                     <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-900">{{ $payment->payment_number }}</td>
                                     <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-900">{{ $payment->payment_date->format('M d, Y') }}</td>
-                                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-900">Rs {{ number_format($payment->amount, 2) }}</td>
+                                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-900">{{ \App\Helpers\CurrencyHelper::formatAmount($payment->amount) }}</td>
                                     <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-900">{{ $payment->payment_method }}</td>
                                     <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-900">{{ $payment->reference_number ?? 'N/A' }}</td>
                                 </tr>
